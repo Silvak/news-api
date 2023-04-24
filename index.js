@@ -1,19 +1,47 @@
 const express = require("express");
-const app = express();
 const { createProxyMiddleware } = require("http-proxy-middleware");
+const app = express();
 
-app.use(
-  "/",
-  createProxyMiddleware({
-    target: "https://cnnespanol.cnn.com/seccion/economia-y-negocios/", // la URL de la página de terceros a la que se quiere acceder
-    changeOrigin: true,
-    secure: false,
-    onProxyRes: function (proxyRes, req, res) {
-      proxyRes.headers["Access-Control-Allow-Origin"] = "*";
-    },
-  })
-);
+// url webs directions
+const URLS = {
+  ELPAIS: "http://elpais.com/america-colombia/?ed=col",
+  REUTERS: "http://www.reuters.com/business/",
+  CNN: "http://cnnespanol.cnn.com/seccion/economia-y-negocios/",
+};
+
+// proxys
+const corsProxyPais = createProxyMiddleware({
+  target: URLS.ELPAIS,
+  changeOrigin: true,
+  onProxyRes: function (proxyRes, req, res) {
+    proxyRes.headers["access-control-allow-origin"] = "*";
+    proxyRes.headers["access-control-allow-credentials"] = "true";
+  },
+});
+
+const corsProxyReuters = createProxyMiddleware({
+  target: URLS.REUTERS,
+  changeOrigin: true,
+  onProxyRes: function (proxyRes, req, res) {
+    proxyRes.headers["access-control-allow-origin"] = "*";
+    proxyRes.headers["access-control-allow-credentials"] = "true";
+  },
+});
+
+const corsProxyCnn = createProxyMiddleware({
+  target: URLS.CNN,
+  changeOrigin: true,
+  onProxyRes: function (proxyRes, req, res) {
+    proxyRes.headers["access-control-allow-origin"] = "*";
+    proxyRes.headers["access-control-allow-credentials"] = "true";
+  },
+});
+
+//app
+app.use("/api/elpais", corsProxyPais);
+app.use("/api/reuters", corsProxyReuters);
+app.use("/api/cnn", corsProxyCnn);
 
 app.listen(3000, () => {
-  console.log("Servidor iniciado en el puerto 3000");
+  console.log("Server start on port 3000");
 });
