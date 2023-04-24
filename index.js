@@ -9,8 +9,8 @@ app.use(cors());
 // url webs directions
 const URLS = {
   ELPAIS: "http://elpais.com/america-colombia/?ed=col",
-  REUTERS: "http://www.reuters.com/business/",
-  CNN: "http://cnnespanol.cnn.com/seccion/economia-y-negocios/",
+  REUTERS: "http://www.reuters.com/business",
+  CNN: "http://cnnespanol.cnn.com/seccion/economia-y-negocios",
 };
 
 // proxys
@@ -43,7 +43,7 @@ const corsProxyCnn = createProxyMiddleware({
 
 //app
 app.use("/api/elpais", corsProxyPais);
-app.use("/api/reuters", corsProxyReuters);
+app.use("/", corsProxyReuters);
 app.use("/api/cnn", corsProxyCnn);
 
 app.listen(3000, () => {
