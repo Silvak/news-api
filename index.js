@@ -13,8 +13,8 @@ const URLS = {
   CNN: "http://cnnespanol.cnn.com/seccion/economia-y-negocios",
 };
 
-// proxys
-const corsProxyPais = createProxyMiddleware({
+// proxy
+const corsProxy = createProxyMiddleware({
   target: URLS.ELPAIS,
   changeOrigin: true,
   onProxyRes: function (proxyRes, req, res) {
@@ -23,28 +23,8 @@ const corsProxyPais = createProxyMiddleware({
   },
 });
 
-const corsProxyReuters = createProxyMiddleware({
-  target: URLS.REUTERS,
-  changeOrigin: true,
-  onProxyRes: function (proxyRes, req, res) {
-    proxyRes.headers["access-control-allow-origin"] = "*";
-    proxyRes.headers["access-control-allow-credentials"] = "true";
-  },
-});
-
-const corsProxyCnn = createProxyMiddleware({
-  target: URLS.CNN,
-  changeOrigin: true,
-  onProxyRes: function (proxyRes, req, res) {
-    proxyRes.headers["access-control-allow-origin"] = "*";
-    proxyRes.headers["access-control-allow-credentials"] = "true";
-  },
-});
-
 //app
-app.use("/api/elpais", corsProxyPais);
-app.use("/", corsProxyReuters);
-app.use("/api/cnn", corsProxyCnn);
+app.use("/", corsProxy);
 
 app.listen(3000, () => {
   console.log("Server start on port 3000");
