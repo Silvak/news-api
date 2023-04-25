@@ -28,7 +28,7 @@ const corsProxy = createProxyMiddleware({
 // Ruta original sin el proxy inverso
 app.get("/web", async (req, res) => {
   try {
-    const response = await axios.get("http://news-api-kohl.vercel.app/web");
+    const response = await axios.get("https://news-api-kohl.vercel.app");
     const $ = cheerio.load(response.data);
     $(".x-ph").remove(); // Eliminar todos los elementos con la clase 'clase-a-eliminar' del DOM
     $(".ad-giga").remove();
